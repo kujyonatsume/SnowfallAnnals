@@ -1,16 +1,13 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+
 const el = ref(null);
 const show = ref(false);
 let observer;
 
 onMounted(() => {
   observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        show.value = true;
-        observer.disconnect();
-      }
-    },
+    ([entry]) => show.value = entry.isIntersecting,
     { threshold: 0.2 },
   );
 
@@ -32,11 +29,15 @@ onBeforeUnmount(() => observer?.disconnect());
   transform: translateY(60px) scale(0.9);
 
   &.show {
-    animation: bounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  &:not(.show) {
+    animation: bounceOut 0.5s ease forwards;
   }
 }
 
-@keyframes bounce {
+@keyframes bounceIn {
   0% {
     opacity: 0;
     transform: translateY(60px) scale(0.9);
@@ -53,4 +54,19 @@ onBeforeUnmount(() => observer?.disconnect());
     opacity: 1;
   }
 }
+
+@keyframes bounceOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(-6px) scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+}
+
 </style>

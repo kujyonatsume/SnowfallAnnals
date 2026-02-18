@@ -11,17 +11,23 @@ const route = useRoute();
 @keyframes SideIn {
   0% {
     transform: translateY(100%);
+    opacity: 0;
+  }
+  90% {
+    transform: translateY(10%);
+    opacity: 0.75;
   }
   100% {
-    transform: translateY(0);
+    transform: translateY(0%);
+    opacity: 1;
   }
 }
 
+
 .app-wrapper {
-  background: linear-gradient(180deg, #f0f0f0 0%, #ffffff 100%);
-  animation: SideIn 0.5s ease-out;
-  transition-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
-  transform: translateY(0);
-  transition: transform 0.5s;
+  background: linear-gradient(to top, #60ffcf50 0%, #ffffff30 100%);
+  animation-name: SideIn;
+  animation-timing-function: ease-in;
+  animation-duration: 2s;
 }
 </style>
