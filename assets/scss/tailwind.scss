@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$page-bg: theme("colors.gray.100");
+
+@layer base {
+  body {
+    background-color: $page-bg;
+  }
+}
