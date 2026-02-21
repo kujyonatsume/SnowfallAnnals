@@ -1,20 +1,49 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const el = ref(null);
+const el = ref<HTMLElement>();
 const show = ref(false);
-let observer;
+
+let ticking = false;
+
+function checkVisibility() {
+  if (!el.value) return;
+
+  const rect = el.value.getBoundingClientRect();
+  const vh = window.innerHeight;
+
+  const elementHeight = rect.height;
+
+  // 計算進入 viewport 的高度
+  const visibleHeight =
+    Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+
+  const visibleRatio = visibleHeight / elementHeight;
+
+  show.value = visibleRatio > 0.2;
+}
+
+function onScroll() {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      checkVisibility();
+      ticking = false;
+    });
+    ticking = true;
+  }
+}
 
 onMounted(() => {
-  observer = new IntersectionObserver(
-    ([entry]) => show.value = entry.isIntersecting,
-    { threshold: 0.2 },
-  );
+  window.addEventListener("scroll", onScroll);
+  window.addEventListener("resize", checkVisibility);
 
-  observer.observe(el.value);
+  checkVisibility(); // 初始化
 });
 
-onBeforeUnmount(() => observer?.disconnect());
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", onScroll);
+  window.removeEventListener("resize", checkVisibility);
+});
 </script>
 
 <template>

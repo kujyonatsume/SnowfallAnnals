@@ -2,7 +2,7 @@ import { defineNuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
-
+  ssr: false,
   devtools: { enabled: true },
   tailwindcss: {
     viewer: false,
@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@vueuse/nuxt",
     "nuxt-twemoji",
+    "@hypernym/nuxt-anime",
   ],
   app: {
     head: {
